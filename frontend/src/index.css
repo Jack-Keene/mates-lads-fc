@@ -1,13 +1,147 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  --mates-lads-blue: #1a2947;
+  --mates-lads-light-blue: #103b90;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.navbar {
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: var(--mates-lads-blue) !important;
+}
+
+.fixture {
+  border: none;
+  /* border-bottom: 1px solid var(--bs-gray-500); */
+}
+
+@media (max-width: 992px) {
+  .fixture {
+    border-bottom: 1px solid var(--bs-gray-500);
+  }
+}
+@media (min-width: 992px) {
+  .fixture {
+    border-right: 3px solid var(--bs-gray-200);
+  }
+}
+
+.teams .list-group-item {
+  border: none;
+}
+
+.teams {
+  border-right: 1px solid var(--bs-gray-500);
+}
+
+.date {
+  color: var(--mates-lads-blue) !important;
+}
+
+.score .list-group-item {
+  border: none;
+}
+
+.link,
+.link:visited,
+.link:hover {
+  text-decoration: none;
+  color: var(--mates-lads-blue);
+}
+
+.bg-primary .navbar-nav .nav-link.active,
+.bg-primary .navbar-nav .nav-link:focus,
+.bg-primary .navbar-nav .nav-link:hover,
+.bg-primary .navbar-nav .show > .nav-link {
+  color: #fff !important;
+}
+
+.result {
+  /* text-align: center; */
+  border: 2px solid var(--mates-lads-light-blue);
+}
+
+.result h4 {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.blue {
+  color: var(--mates-lads-light-blue);
+}
+.dark-blue {
+  color: var(--mates-lads-blue);
+}
+
+.blue-bg {
+  background-color: var(--mates-lads-blue);
+}
+.light-blue-bg {
+  background-color: var(--mates-lads-light-blue);
+}
+
+h6 {
+  margin: 0;
+}
+
+.player {
+  border: none;
+}
+
+.underline-blue {
+  border-bottom: 4px solid var(--mates-lads-light-blue);
+}
+
+.right-border-grey {
+  border-right: 2px solid var(--bs-gray-500);
+}
+
+.border-blue {
+  border: 2px solid var(--mates-lads-light-blue);
+}
+.border-none {
+  border: none !important;
+}
+
+.border-square {
+  border-radius: 0;
+}
+
+.result .list-group-item {
+  border: none;
+}
+
+.bg-grey {
+  background-color: var(--bs-gray-100);
+}
+
+.line {
+  display: block;
+  margin: 0px;
+}
+.line h1 {
+  font-size: 36px;
+  text-align: center;
+  border-bottom: 4px solid var(--mates-lads-light-blue);
+  position: relative;
+}
+.line h1 span {
+  background-color: white;
+  position: relative;
+  top: 20px;
+  padding: 0 10px;
+}
+
+.zoom:hover {
+  transform: scale(1.1);
+  transition: transform ease-in 0.3s;
+}
+.zoom {
+  transform: scale(1);
+  transition: transform ease-in 0.3s;
+}
+
+.player-button,
+.player-button:hover {
+  border-radius: 0;
+  background: #ffffff;
 }
