@@ -1,22 +1,18 @@
-import Fixture from "../models/fixtureModel.js";
-import asyncHandler from "express-async-handler";
+import AltFixture from "../models/altFixtureModel.js";
+import { AltTableRow } from "../models/altLeagueTableRowModel.js";
 import { League } from "../models/leagueModel.js";
-import { Team } from "../models/teamModel.js";
-import { TableRow } from "../models/leagueTableRowModel.js";
+import asyncHandler from "express-async-handler";
 
 // @desc    Add fixture
 // @route   POST api/fixtures
 // @access  Public
 const createFixture = asyncHandler(async (req, res) => {
-  const { leagueId, homeTeamName, awayTeamName, date } = req.body;
+  const { leagueId, homeTeam, awayTeam, date } = req.body;
 
-  const league = await League.findById(leagueId);
-  const homeTeam = await Team.findOne({ name: homeTeamName });
-  const awayTeam = await Team.findOne({ name: awayTeamName });
   const parseDate = new Date(date);
 
-  const fixture = await Fixture.create({
-    league,
+  const fixture = await AltFixture.create({
+    league: leagueId,
     homeTeam,
     awayTeam,
     date: parseDate,
@@ -39,16 +35,49 @@ const createFixture = asyncHandler(async (req, res) => {
 // @route   PUT api/fixtures/:id
 // @access  Public
 const updateFixtureById = asyncHandler(async (req, res) => {
-  const fixture = await Fixture.findById(req.params.id);
-  const {
-    league: { _id },
-    isPlayed,
-  } = req.body;
+  const fixture = await AltFixture.findById(req.params.id)
+    .populate("homeTeam", "name")
+    .populate("awayTeam", "name");
 
+  const {
+    isPlayed,
+    league: { _id },
+  } = req.body;
+  // console.log(fixture);
   if (isPlayed) {
-    const homeTableRow = await TableRow.findOneAndUpdate(
+    const homeFixtures = await AltFixture.find({
+      homeTeam: fixture.homeTeam._id,
+      isPlayed: true,
+      league: _id,
+    });
+    const awayFixtures = await AltFixture.find({
+      awayTeam: fixture.homeTeam._id,
+      isPlayed: true,
+      league: _id,
+    });
+
+    const homePoints = homeFixtures.reduce(
+      (acc, curr) =>
+        curr.homeGoals > curr.awayGoals
+          ? acc + 3
+          : curr.homeGoals === curr.awayGoals
+          ? acc + 1
+          : acc,
+      0
+    );
+    const awayPoints = awayFixtures.reduce(
+      (acc, curr) =>
+        curr.homeGoals < curr.awayGoals
+          ? acc + 3
+          : curr.homeGoals === curr.awayGoals
+          ? acc + 1
+          : acc,
+      0
+    );
+
+    const homeTableRow = await AltTableRow.findOneAndUpdate(
       {
-        "team.name": fixture.homeTeam.name,
+        team: fixture.homeTeam._id,
         league: _id,
       },
       {
@@ -71,9 +100,10 @@ const updateFixtureById = asyncHandler(async (req, res) => {
         },
       }
     );
-    const awayTableRow = await TableRow.findOneAndUpdate(
+
+    const awayTableRow = await AltTableRow.findOneAndUpdate(
       {
-        "team.name": fixture.awayTeam.name,
+        team: fixture.awayTeam._id,
         league: _id,
       },
       {
@@ -97,11 +127,9 @@ const updateFixtureById = asyncHandler(async (req, res) => {
       }
     );
 
-    const table = await TableRow.find({
+    const table = await AltTableRow.find({
       "table.league._id": homeTableRow.league._id,
     });
-
-    console.log(table);
 
     await League.findOneAndUpdate(
       { _id: homeTableRow.league._id },
@@ -112,7 +140,6 @@ const updateFixtureById = asyncHandler(async (req, res) => {
       }
     );
   }
-
   if (fixture) {
     fixture.league = req.body.league || fixture.league;
     fixture.homeTeam = req.body.homeTeam || fixture.homeTeam;
@@ -145,8 +172,11 @@ const updateFixtureById = asyncHandler(async (req, res) => {
 // @route   GET api/fixtures
 // @access  Public
 const getFixtures = asyncHandler(async (req, res) => {
-  const fixtures = await Fixture.find({}).sort({ date: -1 });
-  console.log(fixtures);
+  const fixtures = await AltFixture.find({})
+    .sort({ date: -1 })
+    .populate("league", "name venue")
+    .populate("homeTeam", "name")
+    .populate("awayTeam", "name");
   res.json(fixtures);
 });
 
@@ -154,8 +184,24 @@ const getFixtures = asyncHandler(async (req, res) => {
 // @route   GET api/fixtures/:id
 // @access  Public
 const getFixtureById = asyncHandler(async (req, res) => {
-  const fixture = await Fixture.findById(req.params.id);
-
+  const fixture = await AltFixture.findById(req.params.id)
+    .populate("league", "name venue")
+    .populate("homeTeam", "name players")
+    .populate("awayTeam", "name players")
+    .populate({
+      path: "homeTeam",
+      populate: {
+        path: "players",
+        model: "Player",
+      },
+    })
+    .populate({
+      path: "awayTeam",
+      populate: {
+        path: "players",
+        model: "Player",
+      },
+    });
   if (fixture) {
     res.json(fixture);
   } else {

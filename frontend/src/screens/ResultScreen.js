@@ -83,7 +83,7 @@ const ResultScreen = () => {
                           <h1
                             className='d-flex blue align-self-center justify-content-end ps-1 m-0'
                             style={{ fontSize: "3rem" }}>
-                            {fixture.homeGoals}
+                            {fixture.isPlayed && fixture.homeGoals}
                           </h1>
                         </ListGroup.Item>
                         <ListGroup.Item md='auto'>
@@ -122,14 +122,25 @@ const ResultScreen = () => {
                           <h1
                             className='d-flex blue align-self-center justify-content-end ps-1 m-0'
                             style={{ fontSize: "3rem" }}>
-                            {fixture.awayGoals}
+                            {fixture.isPlayed && fixture.awayGoals}
                           </h1>
                         </ListGroup.Item>
                         <ListGroup.Item md='auto'>
                           <Goalscorers
-                            players={fixture.stats.filter(
-                              (stat) => stat.stat === "Goal" && !stat.home
-                            )}
+                            icon={true}
+                            players={fixture.stats
+                              .filter(
+                                (stat) => stat.stat === "Goal" && !stat.home
+                              )
+                              .reduce(
+                                (acc, curr) => (
+                                  acc[curr.playerName]
+                                    ? ++acc[curr.playerName]
+                                    : (acc[curr.playerName] = 1),
+                                  acc
+                                ),
+                                {}
+                              )}
                           />
                         </ListGroup.Item>
                       </ListGroup>
@@ -142,13 +153,35 @@ const ResultScreen = () => {
           <Col lg={4}>
             <Card className='text-center border-none mb-5 mx-3 p-4'>
               <h4>
-                <strong>Lineup</strong>
+                <strong>Home Lineup</strong>
               </h4>
               <Row>
                 <Col>
                   <ListGroup variant='flush'>
                     {fixture.homeTeam && (
-                      <Lineup players={fixture.homeTeam.players} />
+                      <Lineup
+                        players={fixture.stats.filter(
+                          (stat) => stat.stat === "Appearance" && stat.home
+                        )}
+                      />
+                    )}
+                  </ListGroup>
+                </Col>
+              </Row>
+            </Card>
+            <Card className='text-center border-none mb-5 mx-3 p-4'>
+              <h4>
+                <strong>Away Lineup</strong>
+              </h4>
+              <Row>
+                <Col>
+                  <ListGroup variant='flush'>
+                    {fixture.awayTeam && (
+                      <Lineup
+                        players={fixture.stats.filter(
+                          (stat) => stat.stat === "Appearance" && !stat.home
+                        )}
+                      />
                     )}
                   </ListGroup>
                 </Col>

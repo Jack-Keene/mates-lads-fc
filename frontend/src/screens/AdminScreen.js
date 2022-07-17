@@ -7,6 +7,7 @@ const AdminScreen = () => {
   const [leagueOpen, setLeagueOpen] = useState(false);
   const [fixtureOpen, setFixtureOpen] = useState(false);
   const [teamOpen, setTeamOpen] = useState(false);
+  const [playerOpen, setPlayerOpen] = useState(false);
 
   const playerLogin = useSelector((state) => state.playerLogin);
   const { playerInfo } = playerLogin;
@@ -27,10 +28,10 @@ const AdminScreen = () => {
               </h3>
               {leagueOpen && (
                 <>
-                  <Link className='link ' to='/addLeague'>
+                  <Link className='link ' to='leagues/add'>
                     Add League
                   </Link>
-                  <Link className='link' to='/editLeagues'>
+                  <Link className='link' to='leagues'>
                     Edit Leagues
                   </Link>
                 </>
@@ -44,10 +45,10 @@ const AdminScreen = () => {
               </h3>
               {fixtureOpen && (
                 <>
-                  <Link className='link' to='/addFixture'>
+                  <Link className='link' to='fixtures/add'>
                     Add Fixture
                   </Link>
-                  <Link className='link' to='/setResult'>
+                  <Link className='link' to='fixtures'>
                     Set Result
                   </Link>
                 </>
@@ -61,20 +62,31 @@ const AdminScreen = () => {
               </h3>
               {teamOpen && (
                 <>
-                  <Link className='link' to='/addTeam'>
+                  <Link className='link' to='teams/add'>
                     Add Team
                   </Link>
-                  <Link className='link' to='/editTeam'>
+                  <Link className='link' to='teams'>
                     Edit Team
                   </Link>
                 </>
               )}
             </Card>
-
             <Card className='p-2 m-2'>
-              <Link className='link' to='/addPlayer'>
-                <h3>Add Player</h3>
-              </Link>
+              <h3
+                style={{ cursor: "pointer" }}
+                onClick={() => setPlayerOpen(!playerOpen)}>
+                Players
+              </h3>
+              {playerOpen && (
+                <>
+                  <Link className='link' to='players/add'>
+                    Add Player
+                  </Link>
+                  <Link className='link' to='players'>
+                    Edit Players
+                  </Link>
+                </>
+              )}
             </Card>
           </Container>
         </>

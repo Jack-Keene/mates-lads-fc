@@ -81,7 +81,7 @@ const AddFixtureScreen = () => {
                   onChange={(e) => setHomeTeam(e.target.value)}>
                   <option>Home Team</option>
                   {table.map((t) => (
-                    <option value={t.team.name}>{t.team.name}</option>
+                    <option value={t.team._id}>{t.team.name}</option>
                   ))}
                 </Form.Select>
               </Form.Group>
@@ -96,7 +96,7 @@ const AddFixtureScreen = () => {
                   onChange={(e) => setAwayTeam(e.target.value)}>
                   <option>Away Team</option>
                   {table.map((t) => (
-                    <option value={t.team.name}>{t.team.name}</option>
+                    <option value={t.team._id}>{t.team.name}</option>
                   ))}
                 </Form.Select>
               </Form.Group>

@@ -1,4 +1,7 @@
-import { faGalacticRepublic } from "@fortawesome/free-brands-svg-icons";
+import {
+  faAcquisitionsIncorporated,
+  faGalacticRepublic,
+} from "@fortawesome/free-brands-svg-icons";
 import {
   STAT_CREATE_REQUEST,
   STAT_CREATE_SUCCESS,
@@ -6,6 +9,9 @@ import {
   STAT_DELETE_REQUEST,
   STAT_DELETE_SUCCESS,
   STAT_DELETE_FAIL,
+  STAT_LIST_REQUEST,
+  STAT_LIST_SUCCESS,
+  STAT_LIST_FAIL,
 } from "../constants/statsConstants.js";
 
 export const statCreateReducer = (state = { stat: {} }, action) => {
@@ -28,6 +34,19 @@ export const statDeleteReducer = (state = {}, action) => {
     case STAT_DELETE_SUCCESS:
       return { loading: false, success: true };
     case STAT_DELETE_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const statListReducer = (state = { stats: [] }, action) => {
+  switch (action.type) {
+    case STAT_LIST_REQUEST:
+      return { loading: true, stats: [] };
+    case STAT_LIST_SUCCESS:
+      return { loading: false, stats: action.payload };
+    case STAT_LIST_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

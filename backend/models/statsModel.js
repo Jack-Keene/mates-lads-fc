@@ -18,6 +18,10 @@ const statSchema = mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  fixture: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "AltFixture",
+  },
 });
 
 const Stat = mongoose.model("Stat", statSchema);

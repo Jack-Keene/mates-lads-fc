@@ -81,10 +81,12 @@ export const register =
         payload: data,
       });
 
-      dispatch({
-        type: PLAYER_LOGIN_SUCCESS,
-        payload: data,
-      });
+      if (!localStorage.playerInfo) {
+        dispatch({
+          type: PLAYER_LOGIN_SUCCESS,
+          payload: data,
+        });
+      }
 
       localStorage.setItem("playerInfo", JSON.stringify(data));
     } catch (error) {

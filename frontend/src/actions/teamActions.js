@@ -89,7 +89,7 @@ export const createTeam = (name) => async (dispatch, getState) => {
 };
 export const updateTeam = (team) => async (dispatch, getState) => {
   try {
-    dispatch({ type: TEAM_UPDATE_REQUEST }, config);
+    dispatch({ type: TEAM_UPDATE_REQUEST });
 
     const {
       playerLogin: { playerInfo },

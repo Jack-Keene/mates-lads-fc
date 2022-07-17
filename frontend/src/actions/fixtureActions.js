@@ -15,8 +15,7 @@ import {
 } from "../constants/fixtureConstants.js";
 
 export const createFixture =
-  (leagueId, homeTeamName, awayTeamName, date) =>
-  async (dispatch, getState) => {
+  (leagueId, homeTeam, awayTeam, date) => async (dispatch, getState) => {
     try {
       dispatch({ type: FIXTURE_CREATE_REQUEST });
 
@@ -33,7 +32,7 @@ export const createFixture =
 
       const { data } = await axios.post(
         "/api/fixtures",
-        { leagueId, homeTeamName, awayTeamName, date },
+        { leagueId, homeTeam, awayTeam, date },
         config
       );
 
@@ -108,7 +107,7 @@ export const listFixtures = () => async (dispatch) => {
   try {
     dispatch({ type: FIXTURE_LIST_REQUEST });
 
-    const { data } = await axios.get("api/fixtures");
+    const { data } = await axios.get("/api/fixtures");
     dispatch({
       type: FIXTURE_LIST_SUCCESS,
       payload: data,

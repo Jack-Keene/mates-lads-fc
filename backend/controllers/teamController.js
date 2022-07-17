@@ -40,20 +40,20 @@ const updateTeamById = asyncHandler(async (req, res) => {
     team.name = req.body.name || team.name;
 
     const updatedTeam = await team.save();
-    await League.updateMany(
-      {},
-      {
-        $set: {
-          table: {
-            team: {
-              _id: req.params.id,
-              name: updatedTeam.name,
-              players: updatedTeam.players,
-            },
-          },
-        },
-      }
-    );
+    // await League.updateMany(
+    //   {},
+    //   {
+    //     $set: {
+    //       table: {
+    //         team: {
+    //           _id: req.params.id,
+    //           name: updatedTeam.name,
+    //           players: updatedTeam.players,
+    //         },
+    //       },
+    //     },
+    //   }
+    // );
 
     res.json({
       _id: updatedTeam._id,

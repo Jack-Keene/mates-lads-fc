@@ -25,7 +25,7 @@ export const teamListReducer = (state = { teams: [] }, action) => {
       return state;
   }
 };
-export const teamDetailsReducer = (state = { team: {} }, action) => {
+export const teamDetailsReducer = (state = {}, action) => {
   switch (action.type) {
     case TEAM_DETAILS_REQUEST:
       return { loading: true, ...state };

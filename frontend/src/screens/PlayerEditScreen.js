@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { Form, Button, Row, Col, Table, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
@@ -15,66 +15,52 @@ const ProfileScreen = () => {
   const [lastName, setLastName] = useState("");
   const [number, setNumber] = useState("");
   const [position, setPosition] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState(null);
 
   const dispatch = useDispatch();
+  const params = useParams();
+
+  const playerID = params.id;
+  console.log(playerID);
 
   const playerDetails = useSelector((state) => state.playerDetails);
-  const { loading, error, player } = playerDetails;
-
-  const playerLogin = useSelector((state) => state.playerLogin);
-  const { playerInfo } = playerLogin;
-
-  //   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-  //   const { success } = userUpdateProfile;
-
-  const navigate = useNavigate();
+  const { loading, error, player, success } = playerDetails;
 
   useEffect(() => {
-    if (!playerInfo) {
-      navigate("/login");
+    if (!player._id || player._id != playerID) {
+      dispatch(listPlayerDetails(playerID));
     } else {
-      if (!player.firstName || playerInfo._id !== player._id) {
-        dispatch(listPlayerDetails(playerInfo._id));
-      } else {
-        setFirstName(player.firstName);
-        setLastName(player.lastName);
-        setNumber(player.number);
-        setPosition(player.position);
-      }
+      console.log("got here");
+      setFirstName(player.firstName);
+      setLastName(player.lastName);
+      setNumber(player.number);
+      setPosition(player.position);
     }
-  }, [navigate, playerInfo, dispatch, player]);
+  }, [playerID, dispatch, player]);
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      setMessage("Passwords do not match");
-    } else {
-      console.log(player);
-      dispatch(
-        updatePlayerProfile({
-          id: player._id,
-          firstName,
-          lastName,
-          position,
-          number,
-          password,
-        })
-      );
-    }
+    dispatch(
+      updatePlayerProfile({
+        id: player._id,
+        firstName,
+        lastName,
+        position,
+        number,
+      })
+    );
   };
 
   return (
     <Container>
-      {message && <Message variant='danger'>{message}</Message>}
+      <Link className='btn btn-light my-3' to='/admin/players'>
+        Go Back
+      </Link>
+
       {error && <Message variant='danger'>{error}</Message>}
-      {/* {success && <Message variant='success'>User Updated</Message>} */}
       {loading && <Loader />}
       <FormContainer>
-        <h2>User Profile</h2>
+        <h2>Edit Player</h2>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='firstName'>
             <Form.Label>First Name</Form.Label>
@@ -113,24 +99,6 @@ const ProfileScreen = () => {
               <option value='Midfielder'>Midfielder</option>
               <option value='Attacker'>Attacker</option>
             </Form.Select>
-          </Form.Group>
-          <Form.Group controlId='password'>
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type='password'
-              placeholder='Enter Password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}></Form.Control>
-          </Form.Group>
-          <Form.Group controlId='confirmPassword'>
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              type='password'
-              placeholder='Confirm Password'
-              value={confirmPassword}
-              onChange={(e) =>
-                setConfirmPassword(e.target.value)
-              }></Form.Control>
           </Form.Group>
           <Button type='submit' variant='primary'>
             Update

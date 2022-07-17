@@ -32,6 +32,7 @@ import {
 import {
   statCreateReducer,
   statDeleteReducer,
+  statListReducer,
 } from "./reducers/statReducers.js";
 
 const reducer = combineReducers({
@@ -55,6 +56,7 @@ const reducer = combineReducers({
   leagueRowDelete: leagueRowDeleteReducer,
   statCreate: statCreateReducer,
   statDelete: statDeleteReducer,
+  statList: statListReducer,
 });
 
 const playerInfoFromStorage = localStorage.getItem("playerInfo")

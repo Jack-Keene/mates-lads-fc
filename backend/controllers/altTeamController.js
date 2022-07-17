@@ -39,7 +39,7 @@ const getTeams = asyncHandler(async (req, res) => {
 const getTeamById = asyncHandler(async (req, res) => {
   const team = await AltTeam.findById(req.params.id).populate(
     "players",
-    "firstName lastName number"
+    "firstName lastName number position"
   );
 
   res.json(team);

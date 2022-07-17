@@ -33,9 +33,14 @@ const PlayerScreen = () => {
 
   return (
     <Container>
-      <Link className='btn btn-light my-3' to='/players'>
-        Back to all Players
-      </Link>
+      <div className='d-flex justify-content-between'>
+        <Link className='btn btn-light my-3' to='/players'>
+          View all Players
+        </Link>
+        <Link className='btn btn-light my-3' to='/players/league'>
+          View all Player Stats
+        </Link>
+      </div>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -93,7 +98,7 @@ const PlayerScreen = () => {
                     style={{ fontSize: "35px" }}>
                     <strong>{appearances * 45}</strong>
                   </h1>
-                  <h6 className='text-center blue pb-3'>Minutes Played</h6>
+                  <h6 className='text-center dark-blue pb-3'>Minutes Played</h6>
                 </Card>
               </Col>
               <Col xs={6} sm={4} md={3} lg={3}>

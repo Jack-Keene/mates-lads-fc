@@ -93,7 +93,7 @@ const SetResultScreen = () => {
 
   return (
     <Container>
-      <Link className='btn btn-light my-3' to='/setResult'>
+      <Link className='btn btn-light my-3' to='/admin/fixtures'>
         Go Back
       </Link>
       <h1 className='text-center blue'>

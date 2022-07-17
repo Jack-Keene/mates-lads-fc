@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Fixtures from "../components/Fixtures";
 import ArticleCarousel from "../components/ArticleCarousel";
@@ -13,6 +13,7 @@ import { listPlayers } from "../actions/playerActions";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
+  const [league, setLeague] = useState();
 
   const fixtureList = useSelector((state) => state.fixtureList);
   const {
@@ -33,7 +34,10 @@ const HomeScreen = () => {
     dispatch(listPlayers());
   }, [dispatch]);
 
-  const league = leagues.filter((league) => league.isActive)[0];
+  useEffect(() => {
+    const firstLeague = leagues.filter((league) => league.isActive)[0];
+    setLeague(firstLeague);
+  }, [leaguesLoading]);
 
   return (
     <>
@@ -50,7 +54,18 @@ const HomeScreen = () => {
       ) : fixtureError ? (
         <h1>{fixtureError}</h1>
       ) : (
-        <Fixtures fixtures={fixtures && fixtures.slice(0, 2)} />
+        <Fixtures
+          fixtures={
+            fixtures &&
+            fixtures
+              .filter(
+                (fixture) =>
+                  fixture.homeTeam.name === "Mates/Lads" ||
+                  fixture.awayTeam.name === "Mates/Lads"
+              )
+              .slice(0, 2)
+          }
+        />
       )}
 
       <div className='text-center d-flex justify-content-center'>
@@ -61,16 +76,14 @@ const HomeScreen = () => {
       <span className='line dark-blue'>
         <h1 className=''></h1>
       </span>
-      {leaguesLoading ? (
+      {!league ? (
         <Loader />
-      ) : leaguesError ? (
-        <h1>{leaguesError}</h1>
       ) : (
         <Container>
           <h5 className='py-1 dark-blue'>
-            <strong>{league && league.name}</strong>
+            <strong>{league.name}</strong>
           </h5>
-          {league && <LeagueTable table={league.table} sort={false} />}
+          {<LeagueTable table={league.table} sort={true} />}
         </Container>
       )}
       <span className='line dark-blue'>
@@ -81,7 +94,7 @@ const HomeScreen = () => {
       ) : playersError ? (
         <h1>{playersError}</h1>
       ) : (
-        <PlayerCarousel players={players.slice(0, 5)} />
+        <PlayerCarousel players={players} />
       )}
     </>
   );

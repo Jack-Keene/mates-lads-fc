@@ -10,12 +10,12 @@ const FixtureScreen = () => {
   const dispatch = useDispatch();
 
   const [views, setViews] = useState(2);
-  const [resultViews, setResultViews] = useState(2);
+  const [resultViews, setResultViews] = useState(3);
 
   const fixtureList = useSelector((state) => state.fixtureList);
   const { loading, error, fixtures } = fixtureList;
 
-  const latest = fixtures[0];
+  const latest = fixtures.filter((fixture) => fixture.isPlayed)[0];
 
   useEffect(() => {
     dispatch(listFixtures());

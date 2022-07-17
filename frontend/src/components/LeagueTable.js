@@ -7,7 +7,7 @@ const LeagueTable = ({ table, sort }) => {
     data: [],
     display: [],
   });
-  const [direction, setDirection] = useState(true);
+  const [direction, setDirection] = useState(false);
   const [sortColHead, setSortColHead] = useState("Pts");
 
   const flattenTable = (table) => {
@@ -51,7 +51,6 @@ const LeagueTable = ({ table, sort }) => {
   };
 
   const sortCol = (col) => {
-    console.log(sort);
     if (!sort) {
       return;
     }
@@ -59,13 +58,10 @@ const LeagueTable = ({ table, sort }) => {
       ...tableData,
       data: [...tableData.data],
     };
-    const index = tableData.headers.indexOf(col);
-    console.log(tableData.display[index]);
+    // const index = tableData.headers.indexOf(col);
     setDirection(!direction);
     setSortColHead(col);
-
     sortData(newTableData.data, col);
-
     setTableData(newTableData);
   };
 
@@ -85,6 +81,13 @@ const LeagueTable = ({ table, sort }) => {
     setTableData(flattenedTable);
   }, [table]);
 
+  useEffect(() => {
+    if (tableData.data.length > 0) {
+      console.log(sortColHead);
+      sortCol(sortColHead);
+    }
+  }, [sortColHead, tableData.data.length]);
+
   return (
     <Table>
       <thead>
@@ -97,7 +100,9 @@ const LeagueTable = ({ table, sort }) => {
               {header}
               {sort && sortColHead === header && (
                 <i
-                  class={`p-1 fa-solid fa-arrow-${direction ? "down" : "up"}`}
+                  className={`p-1 fa-solid fa-arrow-${
+                    direction ? "down" : "up"
+                  }`}
                 />
               )}
             </th>

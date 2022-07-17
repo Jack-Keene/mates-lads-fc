@@ -27,7 +27,7 @@ const Fixture = ({ fixture }) => {
           fixture.isPlayed
             ? `/fixtures/${fixture._id}`
             : playerInfo && playerInfo.isAdmin
-            ? `/setResult/${fixture._id}`
+            ? `/admin/fixtures/${fixture._id}/edit`
             : `/fixtures/${fixture._id}`
         }>
         <Row>
@@ -69,9 +69,7 @@ const Fixture = ({ fixture }) => {
                 variant='flush'
                 className='d-flex justify-items-center align-items-center '>
                 <h2 style={{ fontSize: 55 }}>{fixture.date.slice(8, 10)}</h2>
-                <h3 style={{ fontSize: 20 }}>
-                  {Date(fixture.date).toLocaleString().slice(4, 8)}
-                </h3>
+                <h3 style={{ fontSize: 20 }}>{timeString.slice(7, 11)}</h3>
               </ListGroup>
             </Col>
           )}

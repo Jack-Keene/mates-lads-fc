@@ -37,7 +37,7 @@ export const playerRegisterReducer = (state = {}, action) => {
     case PLAYER_REGISTER_REQUEST:
       return { loading: true };
     case PLAYER_REGISTER_SUCCESS:
-      return { loading: false, playerInfo: action.payload };
+      return { loading: false, success: true, playerInfo: action.payload };
     case PLAYER_REGISTER_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -62,7 +62,7 @@ export const playerDetailsReducer = (state = { player: {} }, action) => {
     case PLAYER_DETAILS_REQUEST:
       return { loading: true, ...state };
     case PLAYER_DETAILS_SUCCESS:
-      return { loading: false, player: action.payload };
+      return { loading: false, success: true, player: action.payload };
     case PLAYER_DETAILS_FAIL:
       return { loading: false, error: action.payload };
     default:

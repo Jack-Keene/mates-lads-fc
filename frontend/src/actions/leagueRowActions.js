@@ -7,7 +7,7 @@ import {
 } from "../constants/leagueRowConstants";
 
 export const createLeagueRow =
-  (teamName, leagueId) => async (dispatch, getState) => {
+  (team, leagueId) => async (dispatch, getState) => {
     try {
       dispatch({ type: LEAGUE_ROW_CREATE_REQUEST });
 
@@ -24,7 +24,7 @@ export const createLeagueRow =
 
       const { data } = await axios.post(
         "/api/leagueTable",
-        { teamName, leagueId },
+        { team, leagueId },
         config
       );
       dispatch({ type: LEAGUE_ROW_CREATE_SUCCESS, payload: data });

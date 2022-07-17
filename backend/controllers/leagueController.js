@@ -1,5 +1,5 @@
 import { League } from "../models/leagueModel.js";
-import Fixture from "../models/fixtureModel.js";
+// import Fixture from "../models/fixtureModel.js";
 import asyncHandler from "express-async-handler";
 
 // @desc    Create new league
@@ -45,20 +45,20 @@ const updateLeague = asyncHandler(async (req, res) => {
 
     const updatedLeague = await league.save();
 
-    await Fixture.updateMany(
-      { "league._id": updatedLeague._id },
-      {
-        $set: {
-          league: {
-            _id: updatedLeague._id,
-            name: updatedLeague.name,
-            venue: updatedLeague.venue,
-            table: updatedLeague.table,
-            isActive: updatedLeague.isActive,
-          },
-        },
-      }
-    );
+    // await Fixture.updateMany(
+    //   { "league._id": updatedLeague._id },
+    //   {
+    //     $set: {
+    //       league: {
+    //         _id: updatedLeague._id,
+    //         name: updatedLeague.name,
+    //         venue: updatedLeague.venue,
+    //         table: updatedLeague.table,
+    //         isActive: updatedLeague.isActive,
+    //       },
+    //     },
+    //   }
+    // );
 
     res.json({
       _id: updatedLeague._id,
@@ -77,7 +77,13 @@ const updateLeague = asyncHandler(async (req, res) => {
 // @route   GET api/leagues
 // @access  Public
 const getLeagues = asyncHandler(async (req, res) => {
-  const leagues = await League.find({});
+  const leagues = await League.find({}).populate({
+    path: "table",
+    populate: {
+      path: "team",
+      model: "AltTeam",
+    },
+  });
   res.json(leagues);
 });
 
@@ -85,7 +91,27 @@ const getLeagues = asyncHandler(async (req, res) => {
 // @route   GET api/leagues/:id
 // @access  Public
 const getLeagueById = asyncHandler(async (req, res) => {
-  const league = await League.findById(req.params.id);
+  const league = await League.findById(req.params.id)
+    .populate({
+      path: "table",
+      model: "AltTableRow",
+    })
+    .populate({
+      path: "table",
+      populate: {
+        path: "team",
+        model: "AltTeam",
+      },
+    });
+  //   populate: {
+  //     path: "team",
+  //     model: "AltTableRow",
+  //   },
+  //   populate: {
+  //     path: "won",
+  //     model: "AltTeam",
+  //   },
+  // });
 
   if (league) {
     res.json(league);

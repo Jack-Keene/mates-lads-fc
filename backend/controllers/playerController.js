@@ -98,7 +98,7 @@ const updatePlayerProfile = asyncHandler(async (req, res) => {
     player.position = req.body.position || player.position;
 
     if (req.body.password) {
-      user.password = req.body.password;
+      player.password = req.body.password;
     }
 
     const updatedPlayer = await player.save();

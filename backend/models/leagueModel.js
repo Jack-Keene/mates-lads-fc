@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-import { leagueTableRowSchema } from "./leagueTableRowModel.js";
-import { teamSchema } from "./teamModel.js";
+import { leagueTableRowSchema } from "./altLeagueTableRowModel.js";
 
 const leagueSchema = mongoose.Schema({
   name: {

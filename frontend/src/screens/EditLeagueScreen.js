@@ -8,14 +8,14 @@ import {
   updateLeague,
   resetState,
 } from "../actions/leagueActions";
-import { createLeagueRow } from "../actions/leagueRowActions";
+import { createLeagueRow, removeLeagueRow } from "../actions/leagueRowActions";
 import { listTeams } from "../actions/teamActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import FormContainer from "../components/FormContainer";
 
 const EditLeagueScreen = () => {
-  const [leagueName, setLeagueName] = useState("");
+  const [leagueName, setLeagueName] = useState();
   const [venue, setVenue] = useState("");
   const [table, setTable] = useState([]);
   const [isActive, setIsActive] = useState();
@@ -39,7 +39,7 @@ const EditLeagueScreen = () => {
     dispatch(listTeams());
     if (!league.name || league._id !== params.id) {
       dispatch(listLeagueDetails(params.id));
-    } else {
+    } else if (!leagueName) {
       setLeagueName(league.name);
       setVenue(league.venue);
       setTable(league.table);
@@ -47,11 +47,16 @@ const EditLeagueScreen = () => {
     }
 
     if (row.team) {
-      const newTable = table.slice();
-      newTable.push(row);
-      setTable(newTable);
+      const teamExists = table.filter(
+        (tableRow) => tableRow.team._id === row.team._id
+      )[0];
+      if (!teamExists) {
+        const newTable = table.slice();
+        newTable.push(row);
+        setTable(newTable);
+      }
     }
-    dispatch(resetState());
+    // dispatch(resetState());
   }, [params.id, dispatch, league, row]);
 
   const submitHandler = (e) => {
@@ -73,13 +78,14 @@ const EditLeagueScreen = () => {
   };
 
   const handleDelete = (e) => {
-    console.log(e.target.value);
+    e.preventDefault();
+    dispatch(removeLeagueRow(e.target.value));
     const newTable = table.filter((t) => t._id !== e.target.value);
     setTable(newTable);
   };
   return (
     <Container>
-      <Link className='btn btn-light my-3' to='/editLeagues'>
+      <Link className='btn btn-light my-3' to='/admin/leagues'>
         Go Back
       </Link>
       {success && <Message>League Updated</Message>}
@@ -136,7 +142,10 @@ const EditLeagueScreen = () => {
                 placeholder='Add Team'
                 onChange={handleAdd}>
                 <option>Add Team</option>
-                {teams && teams.map((team) => <option>{team.name}</option>)}
+                {teams &&
+                  teams.map((team) => (
+                    <option value={team._id}>{team.name}</option>
+                  ))}
               </Form.Select>
             </Form.Group>
             <Button className='m-2 ' type='submit' variant='primary'>

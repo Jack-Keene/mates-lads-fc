@@ -1,10 +1,15 @@
 import express from "express";
-import { createStat, deleteStat } from "../controllers/statsController.js";
+import {
+  createStat,
+  deleteStat,
+  getStats,
+} from "../controllers/statsController.js";
 import { admin, protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", protect, admin, createStat);
-router.delete("/", protect, admin, deleteStat);
+router.get("/", getStats);
+router.post("/", createStat);
+router.delete("/", deleteStat);
 
 export default router;

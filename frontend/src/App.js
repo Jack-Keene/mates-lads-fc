@@ -16,12 +16,17 @@ import AddLeagueScreen from "./screens/AddLeagueScreen";
 import LeagueListScreen from "./screens/LeagueListScreen";
 import EditLeagueScreen from "./screens/EditLeagueScreen";
 import AddTeamScreen from "./screens/AddTeamScreen";
-import EditTeamScreen from "./screens/EditTeamScreen";
+// import EditTeamScreen from "./screens/EditTeamScreen";
+import EditTeamScreen from "./screens/newEditTeamScreen";
 import TeamListScreen from "./screens/TeamListScreen";
 import FixtureListScreen from "./screens/FixtureListScreen";
 import SetResultScreen from "./screens/SetResultScreen";
 import Footer from "./components/Footer";
 import ProfileScreen from "./screens/ProfileScreen";
+import FantasyLeagueScreen from "./screens/FantasyLeagueScreen";
+import AddPlayerScreen from "./screens/AddPlayerScreen";
+import PlayersListScreen from "./screens/PlayersListScreen";
+import PlayerEditScreen from "./screens/PlayerEditScreen";
 
 function App() {
   return (
@@ -32,23 +37,36 @@ function App() {
           <Route path='/login' element={<LoginScreen />} />
           <Route path='/register' element={<RegisterScreen />} />
           <Route path='/profile' element={<ProfileScreen />} />
-          <Route path='/fixtures/:id' element={<ResultScreen />} />
           <Route path='/fixtures' element={<FixtureScreen />} />
           <Route path='/league' element={<LeaguesScreen />} />
           <Route path='/league/:id' element={<LeagueScreen />} />
           <Route path='/players' element={<PlayersScreen />} />
           <Route path='/players/:id' element={<PlayerScreen />} />
-          <Route path='/' element={<HomeScreen />} />
+          <Route path='/players/league' element={<FantasyLeagueScreen />} />
+          <Route path='/' element={<HomeScreen />} /> */ /*
+          <Route path='/fixtures/:id' element={<ResultScreen />} />
           <Route path='/admin' element={<AdminScreen />} />
-          <Route path='/addFixture' element={<AddFixtureScreen />} />
-          <Route path='/setResult' element={<FixtureListScreen />} />
-          <Route path='/setResult/:id' element={<SetResultScreen />} />
-          <Route path='/addTeam' element={<AddTeamScreen />} />
-          <Route path='/editTeam' element={<TeamListScreen />} />
-          <Route path='/editTeam/:id' element={<EditTeamScreen />} />
-          <Route path='/addLeague' element={<AddLeagueScreen />} />
-          <Route path='/editLeagues' element={<LeagueListScreen />} />
-          <Route path='/editLeagues/:id' element={<EditLeagueScreen />} />
+          <Route path='/admin/fixtures' element={<FixtureListScreen />} />
+          <Route path='/admin/fixtures/add' element={<AddFixtureScreen />} />
+          <Route
+            path='/admin/fixtures/:id/edit'
+            element={<SetResultScreen />}
+          />
+          <Route path='/admin/leagues' element={<LeagueListScreen />} />
+          <Route path='/admin/leagues/add' element={<AddLeagueScreen />} />
+          <Route
+            path='/admin/leagues/:id/edit'
+            element={<EditLeagueScreen />}
+          />
+          <Route path='/admin/teams/add' element={<AddTeamScreen />} />
+          <Route path='/admin/teams' element={<TeamListScreen />} />
+          <Route path='/admin/teams/:id/edit' element={<EditTeamScreen />} />
+          <Route path='/admin/players/add' element={<AddPlayerScreen />} />
+          <Route path='/admin/players' element={<PlayersListScreen />} />
+          <Route
+            path='/admin/players/:id/edit'
+            element={<PlayerEditScreen />}
+          />
         </Routes>
       </>
       <Footer />

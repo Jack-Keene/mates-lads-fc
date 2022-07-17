@@ -4,17 +4,17 @@ import { Link } from "react-router-dom";
 
 const Player = ({ player }) => {
   return (
-    <Col sm={6} lg={4} className='bg-grey'>
-      <Link to={`/players/${player._id}`} className='link'>
-        <Row className='py-4 px-0 d-flex justify-content-center'>
+    <Col sm={6} lg={4} className='my-1'>
+      <Link to={`/players/${player._id}`} className='link  '>
+        <Row className='py-4 px-0 d-flex justify-content-center m-1 '>
           <Image
             className='zoom'
             fluid
             src='./images/playerCarouselImage.png'
             style={{
-              maxHeight: "50vh",
+              maxHeight: "45vh",
               display: "block",
-              maxWidth: "75vw",
+              maxWidth: "70vw",
               width: "auto",
               height: "auto",
             }}
@@ -24,11 +24,11 @@ const Player = ({ player }) => {
         <Row className=''>
           <Col
             xs={3}
-            className='m-2 light-blue-bg text-center align-self-center justify-content-center'
+            className='m-2 p-0 light-blue-bg text-center align-self-center justify-content-center'
             style={{ maxWidth: "70px" }}>
             <h1
-              className=' align-self-center justify-content-center'
-              style={{ color: "#fff", fontSize: "60px" }}>
+              className=' align-self-center justify-content-center m-0'
+              style={{ color: "#fff", fontSize: "55px" }}>
               {player.number}
             </h1>
           </Col>

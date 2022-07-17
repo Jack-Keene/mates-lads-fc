@@ -1,9 +1,18 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { LinkContainer } from "react-router-bootstrap";
 import { listLeagues } from "../actions/leagueActions";
 import Loader from "../components/Loader";
 import Leagues from "../components/Leagues";
-import { Card, Col, Row, Form, Container } from "react-bootstrap";
+import {
+  Card,
+  Col,
+  Row,
+  Form,
+  Container,
+  Table,
+  Button,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const LeagueListScreen = () => {
@@ -21,7 +30,7 @@ const LeagueListScreen = () => {
         Go Back
       </Link>
       <h1 className='blue pt-3 m-0'>
-        <strong>Current Leagues</strong>
+        <strong>Leagues</strong>
       </h1>
       {loading ? (
         <Loader />
@@ -29,49 +38,41 @@ const LeagueListScreen = () => {
         <h1>Error</h1>
       ) : (
         <>
-          <Row>
-            {leagues &&
-              leagues
-                .filter((league) => league.isActive)
-                .map((league) => (
-                  <Col md={6}>
-                    <Card className='p-2 my-2'>
-                      <Link
-                        to={`/editLeagues/${league._id}`}
-                        className='link blue'>
-                        {league.name} {league.venue}
-                      </Link>
-                    </Card>{" "}
-                  </Col>
-                ))}
-          </Row>
-        </>
-      )}
-      <h1 className='blue pt-3 m-0'>
-        <strong>Past Leagues</strong>
-      </h1>
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <h1>Error</h1>
-      ) : (
-        <>
-          <Row>
-            {leagues &&
-              leagues
-                .filter((league) => !league.isActive)
-                .map((league) => (
-                  <Col md={6}>
-                    <Card key={league._id} className='p-2 my-2'>
-                      <Link
-                        to={`/editLeagues/${league._id}`}
-                        className='link blue'>
-                        {league.name} {league.venue}
-                      </Link>
-                    </Card>{" "}
-                  </Col>
-                ))}
-          </Row>
+          <Table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th className='d-none d-md-table-cell'>Venue</th>
+                <th>Teams</th>
+                <th>Active</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {leagues.map((league) => (
+                <tr key={league._id}>
+                  <td>{league.name}</td>
+                  <td className='d-none d-md-table-cell'>{league.venue}</td>
+                  <td>{league.table.length}</td>
+                  <td>
+                    {league.isActive ? (
+                      <i className='fas fa-check' style={{ color: "green" }} />
+                    ) : (
+                      <i className='fas fa-times' style={{ color: "red" }} />
+                    )}
+                  </td>
+                  <td>
+                    <LinkContainer to={`/admin/leagues/${league._id}/edit`}>
+                      <Button variant='light' className='btn-sm'>
+                        <i className='fas fa-edit' />
+                      </Button>
+                    </LinkContainer>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </>
       )}
     </Container>
